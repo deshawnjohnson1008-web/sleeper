@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Superior Referrals</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#f3f4f6;color:#111827;min-height:100vh;}
+
+/* ── AUTH SCREENS ── */
+.auth-wrap{min-height:100vh;display:flex;flex-direction:column;}
+.auth-nav{background:#1e2d4a;padding:0 2rem;height:60px;display:flex;align-items:center;gap:10px;}
+.auth-nav-logo{display:flex;align-items:center;gap:10px;}
+.auth-nav-icon{width:34px;height:34px;background:rgba(255,255,255,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.auth-nav-name{font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.01em;}
+.auth-body{flex:1;display:flex;}
+.auth-left{flex:1;background:#1e2d4a;display:flex;flex-direction:column;justify-content:center;padding:4rem 3.5rem;position:relative;overflow:hidden;}
+.auth-left::before{content:'';position:absolute;right:-80px;bottom:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,0.18) 0%,transparent 70%);pointer-events:none;}
+.auth-left h2{font-size:36px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:1rem;letter-spacing:-0.02em;}
+.auth-left h2 span{color:#d4a017;}
+.auth-left p{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.65;max-width:380px;}
+.auth-features{margin-top:2.5rem;display:flex;flex-direction:column;gap:14px;}
+.auth-feat{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,0.7);}
+.auth-feat-dot{width:8px;height:8px;border-radius:50%;background:#d4a017;flex-shrink:0;}
+.auth-right{width:440px;flex-shrink:0;background:#f3f4f6;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.auth-card{background:#fff;border-radius:16px;padding:2.25rem;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+.auth-card h3{font-size:22px;font-weight:700;color:#111827;margin-bottom:6px;}
+.auth-card .auth-sub{font-size:14px;color:#6b7280;margin-bottom:1.75rem;}
+.auth-card .auth-sub a{color:#1e2d4a;font-weight:600;cursor:pointer;text-decoration:none;}
+.auth-card .auth-sub a:hover{text-decoration:underline;}
+.afg{display:flex;flex-direction:column;gap:5px;margin-bottom:1rem;}
+.afg label{font-size:13px;font-weight:500;color:#374151;}
+.afg input{font-family:'Inter',sans-serif;font-size:14px;color:#111827;border:1px solid #d1d5db;border-radius:9px;padding:10px 14px;outline:none;transition:border-color 0.15s;width:100%;}
+.afg input:focus{border-color:#1e2d4a;box-shadow:0 0 0 3px rgba(30,45,74,0.1);}
+.afg input::placeholder{color:#9ca3af;}
+.auth-error{font-size:13px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 12px;margin-bottom:1rem;display:none;}
+.auth-error.show{display:block;}
+.auth-submit{width:100%;padding:12px;background:#1e2d4a;color:#fff;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.15s;}
+.auth-submit:hover{background:#162240;}
+.auth-divider{text-align:center;font-size:12px;color:#9ca3af;margin:1.25rem 0;position:relative;}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:#e5e7eb;}
+.auth-divider::before{left:0;} .auth-divider::after{right:0;}
+.free-badge{display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:20px;font-size:12px;font-weight:600;padding:5px 14px;margin-bottom:1.25rem;}
+
+/* ── APP SCREENS ── */
+.app-wrap{display:none;flex-direction:column;min-height:100vh;}
+.app-wrap.visible{display:flex;}
+
+/* HEADER */
+.header{background:#1e2d4a;padding:1.5rem 2.5rem 0;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.header-left{display:flex;align-items:center;gap:14px;}
+.header-icon{width:44px;height:44px;background:rgba(255,255,255,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.header-text h1{font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;}
+.header-text p{font-size:13px;color:rgba(255,255,255,0.5);margin-top:3px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.user-badge{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.7);font-size:13px;}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:#d4a017;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.signout-btn{padding:7px 14px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:none;border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:background 0.15s;}
+.signout-btn:hover{background:rgba(255,255,255,0.18);}
+.add-btn{display:flex;align-items:center;gap:7px;padding:10px 20px;background:#d4a017;color:#fff;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.15s;white-space:nowrap;}
+.add-btn:hover{background:#b8880f;}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:#1e2d4a;padding:1.25rem 2.5rem 2rem;}
+.stat-card{background:#fff;border-radius:13px;padding:1.15rem 1.3rem;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
+.stat-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.si-total{background:#eef2ff;} .si-new{background:#f0fdf4;} .si-contacted{background:#fff7ed;} .si-progress{background:#fdf4ff;}
+.stat-num{font-size:21px;font-weight:700;color:#111827;line-height:1;}
+.stat-label{font-size:10px;font-weight:600;color:#9ca3af;letter-spacing:0.08em;text-transform:uppercase;margin-top:2px;}
+
+/* MAIN */
+.main{padding:1.75rem 2.5rem 4rem;flex:1;}
+
+/* DONUT CARD */
+.chart-card{background:#fff;border-radius:14px;padding:1.5rem 2rem 1.75rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.chart-card h3{font-size:15px;font-weight:600;color:#111827;margin-bottom:1.25rem;}
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.donut-legend{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#374151;}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap;}
+.search-wrap{position:relative;min-width:200px;}
+.search-icon-el{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;color:#9ca3af;pointer-events:none;}
+.search-input{width:100%;padding:9px 14px 9px 34px;border:1px solid #e5e7eb;border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;color:#111827;background:#fff;outline:none;transition:border-color 0.15s;}
+.search-input:focus{border-color:#1e2d4a;}
+.search-input::placeholder{color:#9ca3af;}
+.chip{padding:8px 14px;border-radius:8px;border:1px solid #e5e7eb;background:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:#374151;cursor:pointer;transition:all 0.15s;}
+.chip:hover{border-color:#1e2d4a;color:#1e2d4a;}
+.chip.active{background:#1e2d4a;color:#fff;border-color:#1e2d4a;}
+
+/* CONTACT GROUPS */
+.contact-group{background:#fff;border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.group-header{display:flex;align-items:center;gap:12px;padding:1rem 1.5rem;cursor:pointer;user-select:none;transition:background 0.12s;}
+.group-header:hover{background:#f9fafb;}
+.group-avatar{width:36px;height:36px;border-radius:50%;background:#e5e7eb;color:#374151;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.group-name{font-size:15px;font-weight:600;color:#111827;}
+.group-count{font-size:13px;color:#9ca3af;margin-left:6px;font-weight:400;}
+.group-chevron{margin-left:auto;color:#9ca3af;font-size:13px;transition:transform 0.22s;}
+.contact-group.open .group-chevron{transform:rotate(180deg);}
+.group-body{display:none;padding:0 1rem 1rem;}
+.contact-group.open .group-body{display:block;}
+
+/* REFERRAL CARDS */
+.ref-card{background:#fff;border:1px solid #f0f0f0;border-radius:12px;padding:1.1rem 1.3rem;margin-top:8px;position:relative;}
+.ref-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.ref-avatar{width:36px;height:36px;border-radius:50%;background:#e5e7eb;color:#374151;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.ref-name{font-size:15px;font-weight:600;color:#111827;}
+.ref-via{font-size:12px;color:#6b7280;margin-top:2px;}
+.ref-del{position:absolute;top:10px;right:12px;background:transparent;border:none;cursor:pointer;font-size:15px;color:#d1d5db;transition:color 0.15s;padding:4px;}
+.ref-del:hover{color:#ef4444;}
+.ref-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.ref-phone{font-size:13px;color:#374151;}
+.pipe{color:#d1d5db;}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 11px;border-radius:20px;font-size:12px;font-weight:500;}
+.tag-meet{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.ref-notes{font-size:13px;color:#6b7280;line-height:1.55;margin-bottom:6px;}
+.ref-date{font-size:12px;color:#9ca3af;}
+.ref-followup{font-size:12px;color:#6b7280;margin-bottom:4px;}
+.status-sel{font-family:'Inter',sans-serif;font-size:12px;font-weight:500;border-radius:20px;padding:3px 10px;cursor:pointer;outline:none;border:1px solid transparent;appearance:none;-webkit-appearance:none;}
+
+/* ADD MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;padding:2rem;}
+.modal h2{font-size:19px;font-weight:700;color:#111827;margin-bottom:1.5rem;}
+.mfg{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
+.mfg label{font-size:13px;font-weight:500;color:#374151;}
+.mfg input,.mfg select,.mfg textarea{font-family:'Inter',sans-serif;font-size:14px;color:#111827;background:#fff;border:1px solid #d1d5db;border-radius:9px;padding:10px 14px;outline:none;transition:border-color 0.15s;width:100%;}
+.mfg input:focus,.mfg select:focus,.mfg textarea:focus{border-color:#1e2d4a;box-shadow:0 0 0 3px rgba(30,45,74,0.08);}
+.mfg input::placeholder,.mfg textarea::placeholder{color:#9ca3af;}
+.mfg textarea{resize:vertical;min-height:90px;}
+.meet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.meet-opt{padding:12px 6px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Inter',sans-serif;}
+.meet-opt-icon{font-size:20px;display:block;margin-bottom:4px;}
+.meet-opt-lbl{font-size:12px;font-weight:500;color:#6b7280;}
+.meet-opt:hover{border-color:#1e2d4a;}
+.meet-opt.sel{border-color:#1e2d4a;background:#eef2ff;}
+.meet-opt.sel .meet-opt-lbl{color:#1e2d4a;font-weight:600;}
+.modal-btns{display:flex;gap:10px;margin-top:1.5rem;}
+.btn-cancel{flex:1;padding:11px;border:1px solid #e5e7eb;border-radius:9px;background:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:#374151;cursor:pointer;}
+.btn-cancel:hover{background:#f9fafb;}
+.btn-save{flex:2;padding:11px;border:none;border-radius:9px;background:#1e2d4a;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#fff;cursor:pointer;}
+.btn-save:hover{background:#162240;}
+
+/* EMPTY */
+.empty{text-align:center;padding:3.5rem 1rem;color:#9ca3af;background:#fff;border-radius:14px;}
+.empty-icon{font-size:40px;margin-bottom:10px;opacity:0.35;}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1e2d4a;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,0.18);transform:translateY(60px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.4,0.64,1);z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+.hidden{display:none!important;}
+
+@media(max-width:800px){
+  .auth-left{display:none;}
+  .auth-right{width:100%;}
+  .stats-row{grid-template-columns:repeat(2,1fr);padding:1rem 1rem 1.5rem;}
+  .header{padding:1.25rem 1rem 0;}
+  .main{padding:1.25rem 1rem 3rem;}
+  .header-text h1{font-size:18px;}
+  .filter-bar{gap:6px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ AUTH WRAP ══ -->
+<div class="auth-wrap" id="auth-wrap">
+  <nav class="auth-nav">
+    <div class="auth-nav-logo">
+      <div class="auth-nav-icon">👥</div>
+      <span class="auth-nav-name">Superior Referrals</span>
+    </div>
+  </nav>
+  <div class="auth-body">
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+      <h2>Track every referral.<br/><span>Close more deals.</span></h2>
+      <p>The simplest way to manage your referral pipeline — from first introduction to closed deal.</p>
+      <div class="auth-features">
+        <div class="auth-feat"><div class="auth-feat-dot"></div>Organize referrals by contact</div>
+        <div class="auth-feat"><div class="auth-feat-dot"></div>Track status from New to Closed</div>
+        <div class="auth-feat"><div class="auth-feat-dot"></div>Visual pipeline with donut chart</div>
+        <div class="auth-feat"><div class="auth-feat-dot"></div>Add notes & follow-up dates</div>
+        <div class="auth-feat"><div class="auth-feat-dot"></div>100% free — no credit card needed</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+
+      <!-- SIGN IN CARD -->
+      <div class="auth-card" id="signin-card">
+        <div class="free-badge">✅ Free Account</div>
+        <h3>Welcome back</h3>
+        <p class="auth-sub">Don't have an account? <a onclick="showSignup()">Sign up free</a></p>
+        <div class="auth-error" id="signin-err"></div>
+        <div class="afg"><label>Email address</label><input type="email" id="si-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doSignin()"/></div>
+        <div class="afg"><label>Password</label><input type="password" id="si-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doSignin()"/></div>
+        <button class="auth-submit" onclick="doSignin()">Sign In</button>
+      </div>
+
+      <!-- SIGN UP CARD -->
+      <div class="auth-card hidden" id="signup-card">
+        <div class="free-badge">✅ Always Free</div>
+        <h3>Create your account</h3>
+        <p class="auth-sub">Already have an account? <a onclick="showSignin()">Sign in</a></p>
+        <div class="auth-error" id="signup-err"></div>
+        <div class="afg"><label>Full name</label><input type="text" id="su-name" placeholder="Your full name" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+        <div class="afg"><label>Email address</label><input type="email" id="su-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+        <div class="afg"><label>Password</label><input type="password" id="su-pass" placeholder="Create a password (min 6 chars)" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+        <div class="afg"><label>Confirm password</label><input type="password" id="su-pass2" placeholder="Repeat password" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+        <button class="auth-submit" onclick="doSignup()">Create Free Account</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP WRAP ══ -->
+<div class="app-wrap" id="app-wrap">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-icon">👥</div>
+      <div class="header-text">
+        <h1>Superior Referrals</h1>
+        <p>Track and manage all your referrals in one place</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="user-badge">
+        <div class="user-avatar" id="user-avatar-hdr">?</div>
+        <span id="user-name-hdr"></span>
+      </div>
+      <button class="signout-btn" onclick="doSignout()">Sign out</button>
+      <button class="add-btn" onclick="openModal()">+ Add Referral</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon si-total">👥</div><div><div class="stat-num" id="s-total">0</div><div class="stat-label">Total Referrals</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-new">🆕</div><div><div class="stat-num" id="s-new">0</div><div class="stat-label">New</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-contacted">📞</div><div><div class="stat-num" id="s-contacted">0</div><div class="stat-label">Contacted</div></div></div>
+    <div class="stat-card"><div class="stat-icon si-progress">📈</div><div><div class="stat-num" id="s-progress">0</div><div class="stat-label">In Progress</div></div></div>
+  </div>
+
+  <div class="main">
+
+    <div class="chart-card">
+      <h3>Referrals by Status</h3>
+      <div class="donut-wrap">
+        <canvas id="donut" width="180" height="180"></canvas>
+        <div class="donut-legend" id="legend"></div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <span class="search-icon-el">🔍</span>
+        <input class="search-input" id="search" placeholder="Search referrals..." oninput="render()"/>
+      </div>
+      <button class="chip active" onclick="setMeet('all',this)">All</button>
+      <button class="chip" onclick="setMeet('Met in Person',this)">Met in Person</button>
+      <button class="chip" onclick="setMeet('Interview',this)">Interview</button>
+      <button class="chip" onclick="setMeet('Kitchen Table',this)">Kitchen Table</button>
+    </div>
+
+    <div id="ref-list"></div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="overlay" id="overlay" onclick="bgClick(event)">
+  <div class="modal">
+    <h2>Add New Referral</h2>
+    <div class="mfg"><label>Who gave you this referral?</label><input id="f-from" placeholder="Contact's name"/></div>
+    <div class="mfg"><label>Person being referred</label><input id="f-to" placeholder="Referred person's name"/></div>
+    <div class="mfg"><label>Relationship to contact</label><input id="f-rel" placeholder="e.g. Friend, Coworker, Family member"/></div>
+    <div class="mfg"><label>Phone number</label><input type="tel" id="f-phone" placeholder="(555) 123-4567"/></div>
+    <div class="mfg">
+      <label>How did you meet?</label>
+      <div class="meet-grid">
+        <button class="meet-opt" id="mo-person" onclick="pickMeet('Met in Person')"><span class="meet-opt-icon">📍</span><span class="meet-opt-lbl">Met in Person</span></button>
+        <button class="meet-opt" id="mo-interview" onclick="pickMeet('Interview')"><span class="meet-opt-icon">💼</span><span class="meet-opt-lbl">Interview</span></button>
+        <button class="meet-opt" id="mo-kitchen" onclick="pickMeet('Kitchen Table')"><span class="meet-opt-icon">🏠</span><span class="meet-opt-lbl">Kitchen Table</span></button>
+      </div>
+    </div>
+    <div class="mfg"><label>Status</label>
+      <select id="f-status">
+        <option>New</option><option>Contacted</option><option>Appointment Set</option><option>In Progress</option><option>Closed</option>
+      </select>
+    </div>
+    <div class="mfg"><label>Follow-up date (optional)</label><input type="date" id="f-followup"/></div>
+    <div class="mfg"><label>Notes (optional)</label><textarea id="f-notes" placeholder="Add notes about this referral..."></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="addReferral()">Add Referral</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONSTANTS ──
+const STATUSES=['New','Contacted','Appointment Set','In Progress','Closed'];
+const S_COLORS=['#6366f1','#f59e0b','#10b981','#3b82f6','#8b5cf6'];
+const S_STYLE={
+  'New':            'background:#eff6ff;color:#1d4ed8;',
+  'Contacted':      'background:#fff7ed;color:#c2410c;',
+  'Appointment Set':'background:#f0fdf4;color:#15803d;',
+  'In Progress':    'background:#fefce8;color:#a16207;',
+  'Closed':         'background:#f5f3ff;color:#6d28d9;'
+};
+const MEET_ICO={'Met in Person':'📍','Interview':'💼','Kitchen Table':'🏠'};
+
+// ── STATE ──
+let currentUser = null; // { email, name, initials }
+let refs = [];
+let meetFilter = 'all';
+let pickedMeet = '';
+
+// ── LOCAL STORAGE HELPERS ──
+function getUsers(){ return JSON.parse(localStorage.getItem('sr_users')||'{}'); }
+function saveUsers(u){ localStorage.setItem('sr_users', JSON.stringify(u)); }
+function getUserKey(email){ return 'sr_refs_'+email.toLowerCase().replace(/[^a-z0-9]/g,'_'); }
+function loadRefs(email){
+  const raw = JSON.parse(localStorage.getItem(getUserKey(email))||'[]');
+  return raw.map(r=>({...r, date: new Date(r.date)}));
+}
+function saveRefs(email, data){ localStorage.setItem(getUserKey(email), JSON.stringify(data)); }
+
+// ── AUTH LOGIC ──
+function showSignup(){
+  document.getElementById('signin-card').classList.add('hidden');
+  document.getElementById('signup-card').classList.remove('hidden');
+}
+function showSignin(){
+  document.getElementById('signup-card').classList.add('hidden');
+  document.getElementById('signin-card').classList.remove('hidden');
+}
+
+function authErr(id, msg){
+  const el=document.getElementById(id);
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+function doSignup(){
+  const name=document.getElementById('su-name').value.trim();
+  const email=document.getElementById('su-email').value.trim().toLowerCase();
+  const pass=document.getElementById('su-pass').value;
+  const pass2=document.getElementById('su-pass2').value;
+  if(!name||!email||!pass) return authErr('signup-err','Please fill in all fields.');
+  if(!email.includes('@')) return authErr('signup-err','Please enter a valid email.');
+  if(pass.length<6) return authErr('signup-err','Password must be at least 6 characters.');
+  if(pass!==pass2) return authErr('signup-err','Passwords do not match.');
+  const users=getUsers();
+  if(users[email]) return authErr('signup-err','An account with this email already exists.');
+  users[email]={ name, pass, created: Date.now() };
+  saveUsers(users);
+  launchApp({ email, name });
+}
+
+function doSignin(){
+  const email=document.getElementById('si-email').value.trim().toLowerCase();
+  const pass=document.getElementById('si-pass').value;
+  if(!email||!pass) return authErr('signin-err','Please enter your email and password.');
+  const users=getUsers();
+  if(!users[email]) return authErr('signin-err','No account found with that email.');
+  if(users[email].pass!==pass) return authErr('signin-err','Incorrect password.');
+  launchApp({ email, name: users[email].name });
+}
+
+function doSignout(){
+  currentUser=null;
+  refs=[];
+  localStorage.removeItem('sr_session');
+  document.getElementById('app-wrap').classList.remove('visible');
+  document.getElementById('auth-wrap').style.display='flex';
+  showSignin();
+  ['si-email','si-pass'].forEach(id=>document.getElementById(id).value='');
+}
+
+function launchApp(user){
+  currentUser=user;
+  localStorage.setItem('sr_session', JSON.stringify(user));
+  refs=loadRefs(user.email);
+  // Update UI
+  const initials=user.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('user-avatar-hdr').textContent=initials;
+  document.getElementById('user-name-hdr').textContent=user.name;
+  // Switch screens
+  document.getElementById('auth-wrap').style.display='none';
+  document.getElementById('app-wrap').classList.add('visible');
+  updateStats(); drawDonut(); render();
+  toast('👋 Welcome back, '+user.name.split(' ')[0]+'!');
+}
+
+// ── SAVE ──
+function save(){
+  saveRefs(currentUser.email, refs);
+  updateStats(); drawDonut();
+}
+
+// ── MODAL ──
+function openModal(){ document.getElementById('overlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); document.body.style.overflow=''; }
+function bgClick(e){ if(e.target===document.getElementById('overlay')) closeModal(); }
+
+function pickMeet(v){
+  pickedMeet=v;
+  ['mo-person','mo-interview','mo-kitchen'].forEach(id=>document.getElementById(id).classList.remove('sel'));
+  const m={'Met in Person':'mo-person','Interview':'mo-interview','Kitchen Table':'mo-kitchen'};
+  document.getElementById(m[v]).classList.add('sel');
+}
+
+function addReferral(){
+  const from=g('f-from'),to=g('f-to'),phone=g('f-phone'),rel=g('f-rel'),
+        status=document.getElementById('f-status').value,
+        notes=g('f-notes'),followup=g('f-followup');
+  if(!from||!to||!phone){ toast('⚠️ Please fill in contact, referred person, and phone.'); return; }
+  refs.unshift({id:Date.now(),from,to,phone,rel,meet:pickedMeet,status,notes,followup,date:new Date()});
+  save();
+  ['f-from','f-to','f-phone','f-rel','f-notes','f-followup'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-status').value='New';
+  pickedMeet='';
+  ['mo-person','mo-interview','mo-kitchen'].forEach(id=>document.getElementById(id).classList.remove('sel'));
+  closeModal(); render(); toast('✅ Referral added!');
+}
+
+function g(id){ return document.getElementById(id).value.trim(); }
+
+// ── FILTERS ──
+function setMeet(val,el){
+  meetFilter=val;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); render();
+}
+
+// ── STATUS UPDATE ──
+function updStatus(id,val){
+  const r=refs.find(x=>x.id===id);
+  if(r){ r.status=val; save(); render(); }
+}
+
+function delRef(id){
+  if(!confirm('Remove this referral?')) return;
+  refs=refs.filter(r=>r.id!==id); save(); render(); toast('🗑️ Referral removed.');
+}
+
+// ── RENDER ──
+function render(){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const list=refs.filter(r=>{
+    const mOk=meetFilter==='all'||r.meet===meetFilter;
+    const sOk=!q||[r.from,r.to,r.phone,r.rel,r.notes].some(s=>(s||'').toLowerCase().includes(q));
+    return mOk&&sOk;
+  });
+
+  const groups={};
+  list.forEach(r=>{ const k=r.from.trim(); if(!groups[k])groups[k]=[]; groups[k].push(r); });
+  const keys=Object.keys(groups).sort((a,b)=>a.localeCompare(b));
+  const el=document.getElementById('ref-list');
+
+  if(!keys.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">🤝</div><div>${refs.length===0?'No referrals yet — click <b>+ Add Referral</b> to get started.':'No referrals match your search.'}</div></div>`;
+    return;
+  }
+
+  el.innerHTML=keys.map(name=>{
+    const rlist=groups[name];
+    const init=name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const n=rlist.length;
+    return `<div class="contact-group open">
+      <div class="group-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="group-avatar">${init}</div>
+        <span class="group-name">${esc(name)}</span><span class="group-count">${n} referral${n>1?'s':''}</span>
+        <span class="group-chevron">▾</span>
+      </div>
+      <div class="group-body">${rlist.map(refHTML).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function refHTML(r){
+  const init=r.to.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const dateStr=new Date(r.date).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const st=r.status||'New';
+  const stStyle=S_STYLE[st]||S_STYLE['New'];
+  const opts=STATUSES.map(s=>`<option${s===st?' selected':''}>${s}</option>`).join('');
+  const meetTag=r.meet?`<span class="pipe">|</span><span class="tag tag-meet">${MEET_ICO[r.meet]||''} ${esc(r.meet)}</span>`:'';
+  return `<div class="ref-card">
+    <div class="ref-top">
+      <div class="ref-avatar">${init}</div>
+      <div>
+        <div class="ref-name">${esc(r.to)}</div>
+        <div class="ref-via">👤 via <b>${esc(r.from)}</b>${r.rel?' · '+esc(r.rel):''}</div>
+      </div>
+    </div>
+    <div class="ref-meta">
+      <span class="ref-phone">📞 ${esc(r.phone)}</span>
+      ${meetTag}
+      <select class="status-sel" style="${stStyle}" onchange="updStatus(${r.id},this.value)">${opts}</select>
+    </div>
+    ${r.notes?`<div class="ref-notes">${esc(r.notes)}</div>`:''}
+    ${r.followup?`<div class="ref-followup">📅 Follow-up: ${r.followup}</div>`:''}
+    <div class="ref-date">Added ${dateStr}</div>
+    <button class="ref-del" onclick="delRef(${r.id})">✕</button>
+  </div>`;
+}
+
+// ── STATS ──
+function updateStats(){
+  document.getElementById('s-total').textContent=refs.length;
+  document.getElementById('s-new').textContent=refs.filter(r=>(r.status||'New')==='New').length;
+  document.getElementById('s-contacted').textContent=refs.filter(r=>r.status==='Contacted').length;
+  document.getElementById('s-progress').textContent=refs.filter(r=>r.status==='In Progress').length;
+}
+
+// ── DONUT CHART ──
+function drawDonut(){
+  const canvas=document.getElementById('donut');
+  const ctx=canvas.getContext('2d');
+  const counts=STATUSES.map(s=>refs.filter(r=>(r.status||'New')===s).length);
+  const total=counts.reduce((a,b)=>a+b,0);
+  ctx.clearRect(0,0,180,180);
+
+  if(!total){
+    ctx.beginPath();ctx.arc(90,90,68,0,Math.PI*2);
+    ctx.strokeStyle='#e5e7eb';ctx.lineWidth=22;ctx.stroke();
+    document.getElementById('legend').innerHTML='<span style="font-size:13px;color:#9ca3af">No data yet</span>';
+    return;
+  }
+
+  let start=-Math.PI/2;
+  const present=[];
+  counts.forEach((c,i)=>{
+    if(!c) return;
+    const slice=(c/total)*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(90,90);
+    ctx.arc(90,90,68,start,start+slice);
+    ctx.closePath();ctx.fillStyle=S_COLORS[i];ctx.fill();
+    start+=slice;
+    present.push({label:STATUSES[i],color:S_COLORS[i]});
+  });
+
+  // gap strokes
+  start=-Math.PI/2;
+  counts.forEach(c=>{
+    if(!c) return;
+    ctx.beginPath();ctx.moveTo(90,90);
+    ctx.lineTo(90+80*Math.cos(start),90+80*Math.sin(start));
+    ctx.strokeStyle='#f3f4f6';ctx.lineWidth=2;ctx.stroke();
+    start+=(c/total)*Math.PI*2;
+  });
+
+  // donut hole
+  ctx.beginPath();ctx.arc(90,90,46,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+
+  // center label
+  ctx.fillStyle='#111827';ctx.font='700 22px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(total,90,86);
+  ctx.fillStyle='#9ca3af';ctx.font='11px Inter,sans-serif';
+  ctx.fillText('total',90,104);
+
+  document.getElementById('legend').innerHTML=present.map(s=>
+    `<div class="legend-item"><div class="legend-dot" style="background:${s.color}"></div>${s.label}</div>`
+  ).join('');
+}
+
+// ── TOAST ──
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── INIT: check session ──
+(function(){
+  const session=localStorage.getItem('sr_session');
+  if(session){
+    try{
+      const user=JSON.parse(session);
+      const users=getUsers();
+      if(users[user.email]){
+        launchApp(user);
+        return;
+      }
+    }catch(e){}
+  }
+  // show auth
+  document.getElementById('auth-wrap').style.display='flex';
+})();
+</script>
+</body>
+</html>
